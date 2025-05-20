@@ -11,7 +11,7 @@ createRoot(document.getElementById("root")).render(
 
   // -> 실사용(프로덕션)에서는 아무런 영향을 주지 않는다.
   // (오직 개발모드에서만 필요한 도구) (오히려 헷갈리면 안 써도 상관x)
-  <StrictMode>
-    <App />
-  </StrictMode>
+  // <StrictMode>
+  <App />
+  // </StrictMode>
 );
