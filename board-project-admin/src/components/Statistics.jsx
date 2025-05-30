@@ -5,7 +5,7 @@ export default function Statistics() {
   const [readCountData, setReadCountData] = useState(null);
   const [likeCountData, setLikeCountData] = useState(null);
   const [commentCountData, setCommentCountData] = useState(null);
-  const [newMemberCountData, setNewMemberCount] = useState([]);
+  const [newMembers, setNewMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // true면 로딩 중이라는 뜻, 서버에서 데이터 받아오면 false로 됨
 
   // 최대 조회 수 게시글 조회
@@ -51,13 +51,12 @@ export default function Statistics() {
   };
 
   // 신규 가입 회원 수 조회
-  const getNewMemberCount = async () => {
+  const fetchNewMembers = async () => {
     try {
       const resp = await axiosAPi.get("/admin/newMemberCount");
-      console.log(resp.data);
 
       if (resp.status === 200) {
-        setNewMemberCount(resp.data);
+        setNewMembers(resp.data);
       }
     } catch (error) {
       console.log("신규 멤버 조회 중 에러 발생 : ", error);
@@ -70,7 +69,7 @@ export default function Statistics() {
     getMaxReadCount();
     getMaxLikeCount();
     getMaxCommentCount();
-    getNewMemberCount();
+    fetchNewMembers();
   }, []); // 의존성 배열이 비어있기 때문에 1번만 실행
 
   // readCountData, likeCountData, commentCountData에 변화가 감지될 때 콜백함수 사용
@@ -80,40 +79,18 @@ export default function Statistics() {
       readCountData != null &&
       likeCountData != null &&
       commentCountData != null &&
-      newMemberCountData != null
+      newMembers != null
     ) {
       setIsLoading(false);
     }
-  }, [readCountData, likeCountData, commentCountData, newMemberCountData]);
+  }, [readCountData, likeCountData, commentCountData, newMembers]);
 
   if (isLoading) {
     return <h1>Loading...</h1>;
   } else {
     return (
       <div>
-        <section className="statistics-section">
-          <h2>신규 가입 회원 ({newMemberCountData.length})명</h2>
-          <h4>[7일 이내 가입 회원]</h4>
-          <table>
-            <thead>
-              <tr>
-                <th>회원 번호</th>
-                <th>이메일</th>
-                <th>닉네임</th>
-                <th>가입일</th>
-              </tr>
-            </thead>
-            <tbody>
-              {newMemberCountData.map(())}
-              <tr>
-                <td>{newMemberCountData.memberNo}</td>
-                <td>{newMemberCountData.memberEmail}</td>
-                <td>{newMemberCountData.memberNickname}</td>
-                <td>{newMemberCountData.enrollDate}</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+        <NewMembers data={newMembers} />
 
         <section className="statistics-section">
           <h2>가장 조회수 많은 게시글</h2>
@@ -151,3 +128,32 @@ export default function Statistics() {
     );
   }
 }
+
+const NewMembers = ({ data }) => {
+  return (
+    <div className="new-members">
+      <h2>신규 가입 회원 ({data.length}명)</h2>
+      <h4>[7일 이내 가입 회원]</h4>
+      <table border={1}>
+        <thead>
+          <tr>
+            <th>회원 번호</th>
+            <th>이메일</th>
+            <th>닉네임</th>
+            <th>가입일</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((member) => (
+            <tr key={member.memberNo}>
+              <td>{member.memberNo}</td>
+              <td>{member.memberEmail}</td>
+              <td>{member.memberNickname}</td>
+              <td>{member.enrollDate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
