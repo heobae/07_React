@@ -73,7 +73,7 @@ export default function Statistics() {
   }, []); // 의존성 배열이 비어있기 때문에 1번만 실행
 
   // readCountData, likeCountData, commentCountData에 변화가 감지될 때 콜백함수 사용
-  4; // -> IsLoading 상태값을 false로 변경
+  // -> IsLoading 상태값을 false로 변경
   useEffect(() => {
     if (
       readCountData != null &&
