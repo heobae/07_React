@@ -9,16 +9,17 @@ export default function TodoList() {
   const [inputValue, setInputValue] = useState("");
   const [inputValue2, setInputValue2] = useState("");
 
+  // todoList 목록 불러오는 함수
   const getTodoList = async () => {
     try {
-      const response = await axiosAPi.get("/todo/todoList");
-      setTodoList(response.data);
+      const resp = await axiosAPi.get("/todo/todoList");
+      setTodoList(resp.data);
     } catch (error) {
       console.error("할 일 목록 불러오기 실패:", error);
       setIsLoading(false);
     }
   };
-  // todo 목록 조회용 함수
+
   useEffect(() => {
     getTodoList();
   }, []);
@@ -87,6 +88,7 @@ export default function TodoList() {
   return (
     <div>
       <h1>나의 TodoList</h1>
+      제목:{" "}
       <input
         type="text"
         value={inputValue}
@@ -94,7 +96,8 @@ export default function TodoList() {
         onKeyDown={(e) => {
           if (e.key === "Enter") handleAddTodo();
         }}
-      />
+      />{" "}
+      내용:{" "}
       <input
         type="text"
         value={inputValue2}
@@ -104,7 +107,6 @@ export default function TodoList() {
         }}
       />
       <button onClick={handleAddTodo}>Add Todo</button>
-
       <ul>
         {todoList.map((todo) => {
           console.log("👉 각 Todo 객체:", todo);
