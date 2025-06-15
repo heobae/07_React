@@ -71,6 +71,10 @@ public class TodoController {
 		}
 	}
 	
+	/** 할 일 추가
+	 * @param todo
+	 * @return
+	 */
 	@PostMapping("addTodo")
 	public ResponseEntity<Object> addTodo(@RequestBody Todo todo) {
 		try {
