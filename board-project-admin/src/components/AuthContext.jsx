@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 자식 (하위) 컴포넌트에게 전달할 데이터를 하나로 묶기
+  // 자식 (하위) 컴포넌트에게 전달할 데이터를 하나로 묶기!
   const globalState = {
     user,
     changeInputEmail,
